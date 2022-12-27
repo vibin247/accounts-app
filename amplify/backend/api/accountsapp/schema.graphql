@@ -1,0 +1,28 @@
+type ItemDetails @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  invoice_id: String
+  product_type: String
+  rate: String
+  quantity: String
+  invoiceID: ID! @index(name: "byInvoice")
+}
+
+type Buyer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  phone_numbe: String
+  name: String
+  address: String
+  city: String
+  pincode: String
+  Invoice: Invoice @hasOne
+}
+
+type Invoice @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  invoice_number: String
+  buyer_phone: String
+  date: AWSDate
+  transport_charges: String
+  discount: String
+  ItemDetails: [ItemDetails] @hasMany(indexName: "byInvoice", fields: ["id"])
+}
