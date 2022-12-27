@@ -1,0 +1,152 @@
+@import "./invoice";
+
+body {
+  font-size: 18px;
+  font-family: 'Roboto';
+  margin: 0px;
+}
+
+body * {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+.flex-box {
+    display: flex;
+    display: -webkit-flex;
+}
+
+.flex-column {
+    @extend .flex-box;
+    flex-direction: column;
+}
+
+$align: stretch, center, space-around, space-between, start, space-evenly, end, flex-end, flex-start;
+
+@each $item in $align {
+  .justify-content-#{$item} {
+    justify-content: $item;
+    -webkit-justify-content: $item;
+  }
+  .align-items-#{$item} {
+    align-items: $item;
+    -webkit-align-items: $item;
+  }
+}
+
+$flexGrow: 1, 2, 3, 4, 5, 6;
+
+@each $item in $flexGrow {
+  .flex-#{$item} {
+    flex: $item;
+  }
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.no-flex-gap {
+  gap: 0px !important;
+}
+
+.flex-gap-s {
+  gap: 4px;
+}
+
+.flex-gap-m {
+  gap: 8px;
+}
+
+.flex-gap-l {
+  gap: 16px;
+}
+
+.flex-gap-xl {
+  gap: 24px;
+}
+
+.spacer-xs {
+  padding: 4px;
+}
+
+.spacer-hxs {
+  padding:  0px 4px;
+}
+
+.spacer-vxs {
+  padding: 4px 0px;
+}
+
+.spacer-s {
+  padding: 8px;
+}
+
+.spacer-hs {
+  padding: 0px 8px;
+}
+
+.spacer-vs {
+  padding: 8px 0px;
+}
+
+.spacer-m {
+  padding: 16px;
+}
+
+.spacer-hm {
+  padding: 0px 16px;
+}
+
+.spacer-vm {
+  padding: 16px 0px;
+}
+
+.spacer-l {
+  padding: 24px;
+}
+
+.spacer-hl {
+  padding: 0px 24px;
+}
+
+.spacer-vl {
+  padding: 24px 0px;
+}
+
+.half-field {
+  width: 300px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.font-size-header { 
+  font-size: 30px;
+}
+
+.font-size-sm-1 {
+  font-size: 9px;
+}
+
+.font-size-sm-2 {
+  font-size: 14px;
+}
+
+.font-size-m-1 {
+  font-size: 16px;
+}
+
+.font-size-m-2 {
+  font-size: 18px;
+}
+
+.font-size-l-1 {
+  font-size: 20px;
+}
+
+.font-size-l-2 {
+  font-size: 22px;
+}

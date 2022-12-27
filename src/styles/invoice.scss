@@ -1,0 +1,6 @@
+#invoice {
+    width: 1175px;
+    & > div {
+        border: 1px solid lightgrey;
+    }
+}
