@@ -5,7 +5,10 @@ import { useReactToPrint } from "react-to-print";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import createInvoice, { InvoicePostObject } from "../queries/createInvoice";
+import { API } from "aws-amplify";
+import moment from "moment";
 
 export default function Invoice() {
 
@@ -13,12 +16,16 @@ export default function Invoice() {
     const [ totalBeforeDiscount, setTotalBeforeDiscount ] = useState(0);
     const [ total, setTotal ] = useState(0);
 
-    var invoiceDetails = useSelector((state : RootState) => state.invoiceReducer.invoiceDetails?.invoiceDetails);
+    var invoiceDetails = useSelector((state : RootState) => state.invoiceReducer.invoiceDetails);
 
     const navigate = useNavigate();
+    const params   = useParams();
 
     useEffect(() => {
-        if (!invoiceDetails) {
+        if (params && params.invoice_id) {
+            console.log(params);
+        }
+        else if (!invoiceDetails) {
             navigate("/");
         }
     }, [])
@@ -75,10 +82,32 @@ export default function Invoice() {
         content: () => componentRef.current,
     });
 
+    const saveInvoice = async () => {
+
+        var postObject : InvoicePostObject = {
+            date  : moment(invoiceDetails.date).format("YYYY-MM-DD"),
+            total : total,
+            discount    : invoiceDetails?.discount,
+            buyer_phone : invoiceDetails?.phone_number,
+            invoice_number    : invoiceDetails?.invoice_number,
+            transport_charges : invoiceDetails?.shipping
+        }
+
+        console.log(invoiceDetails, postObject);
+
+        const response = await API.graphql({ query : createInvoice , variables : { inputVar : postObject }})
+        console.log(response);
+
+    }
+
     return (
         <div className="flex-column spacer-m flex-gap-xl">
             <div className="flex-box spacer-hs align-items-center">
-                <Button variant="contained" onClick={printInvoice}> Print Invoice </Button>
+                {
+                    (invoiceDetails && invoiceDetails.id) ?
+                    <Button variant="contained" onClick={printInvoice}> Print Invoice </Button> :
+                    <Button variant="contained" onClick={saveInvoice}> Save And Print Invoice </Button>
+                }
             </div>
             
             {
@@ -89,7 +118,7 @@ export default function Invoice() {
                             <strong className="font-size-header"> DevPrakash Furniture </strong>
                             <div className="flex-column flex-gap-s align-items-flex-end">
                                 <strong> {invoiceDetails?.invoice_number} </strong>
-                                <div> 01/01/2023 </div>
+                                <div> {moment(invoiceDetails.date).format("DD-MM-YYYY")} </div>
                             </div>
                         </div>
     

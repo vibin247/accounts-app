@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Invoice from "./Components/Invoice"
+import ListInvoice from "./Components/ListInvoice"
 import Menu from "./Components/Menu"
 import Sales from "./Components/Sales"
 import "./styles/index.scss"
@@ -17,7 +18,17 @@ export default function App() {
         },
         {
             path : "/invoice",
-            element : <Invoice/>
+            element : <Invoice/>,
+            children : [
+                {
+                    path    : "/invoice/:invoice_id",
+                    element : <Invoice/>
+                }
+            ]
+        },
+        {
+            path : "/list-invoice",
+            element : <ListInvoice/>
         }
     ])
 

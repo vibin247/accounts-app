@@ -6,7 +6,10 @@ export default function Menu() {
     const navigate = useNavigate();
 
     return (
-        <div>
+        <div className="flex-box flex-gap-l align-items-center">
+            <Button variant="contained" onClick={_ => navigate("/list-invoice")}>
+                Show Invoice List
+            </Button>
             <Button variant="contained" onClick={_ => navigate("/create-invoice")}>
                 Create Invoice
             </Button>

@@ -1,0 +1,10 @@
+type Invoices @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  invoice_number: String
+  date: AWSDate
+  buyer_phone: String
+  total: Float
+  transport_charges: Float
+  discount: Float
+}
+ 

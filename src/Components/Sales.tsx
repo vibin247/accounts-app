@@ -19,7 +19,7 @@ export default function Sales() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(storeInvoiceDetails({ invoiceDetails : {} }));
+        dispatch(storeInvoiceDetails({}));
     }, [])
 
     const onValueChange = e => {
@@ -67,10 +67,11 @@ export default function Sales() {
         })
         invoiceObject = {
             ...invoiceObject,
+            date,
             items
         }
 
-        dispatch(storeInvoiceDetails({ invoiceDetails : invoiceObject }));
+        dispatch(storeInvoiceDetails(invoiceObject));
         
         navigate("/invoice");
     }
