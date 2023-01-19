@@ -47,9 +47,7 @@ export default function ListInvoice() {
                             <div className="flex-1 flex-box justify-content-center"> {item.buyer_phone} </div>
                             <div className="flex-1 flex-box justify-content-center"> {item.total} </div>
                             <div className="flex-1 flex-box justify-content-center">
-                                <Button variant="contained" onClick={_ => navigate(`/invoice/${item.id}`)}>
-                                    Show Invoice List
-                                </Button>
+                                <Button variant="contained" onClick={_ => navigate(`/invoice/${item.id}`)}> View </Button>
                             </div>
                         </div>
                     )

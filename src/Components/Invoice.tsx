@@ -9,6 +9,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import createInvoice, { InvoicePostObject } from "../queries/createInvoice";
 import { API } from "aws-amplify";
 import moment from "moment";
+import fetchBuyerViaPhone, { Buyer, BuyerResponse } from "../queries/fetchBuyerViaPhone";
+import createBuyer, { BuyerPostObject } from "../queries/createBuyer";
+import createItemDetails, { ItemDetailsPostObject } from "../queries/createItemDetails";
 
 export default function Invoice() {
 
@@ -80,23 +83,57 @@ export default function Invoice() {
 
     const printInvoice = useReactToPrint({
         content: () => componentRef.current,
+        onAfterPrint : () =>  navigate("/list-invoice")
     });
 
     const saveInvoice = async () => {
 
-        var postObject : InvoicePostObject = {
-            date  : moment(invoiceDetails.date).format("YYYY-MM-DD"),
-            total : total,
-            discount    : invoiceDetails?.discount,
-            buyer_phone : invoiceDetails?.phone_number,
+        var createInvoiceObject : InvoicePostObject = {
+            date     : moment(invoiceDetails.date).format("YYYY-MM-DD"),
+            total    : total,
+            discount : invoiceDetails?.discount,
             invoice_number    : invoiceDetails?.invoice_number,
             transport_charges : invoiceDetails?.shipping
         }
 
-        console.log(invoiceDetails, postObject);
+        const buyer = await API.graphql({ query : fetchBuyerViaPhone, variables : { phoneNumber : invoiceDetails?.phone_number }}) as { data : BuyerResponse };
 
-        const response = await API.graphql({ query : createInvoice , variables : { inputVar : postObject }})
-        console.log(response);
+        var buyersId : any = undefined;
+        
+        if (buyer.data.listBuyers.items.length > 0) {
+            buyersId = buyer.data.listBuyers.items[0].id
+        }
+        else {
+            var createBuyerObject : BuyerPostObject = {
+                address : invoiceDetails?.address,
+                city    : invoiceDetails?.city, 
+                name    : invoiceDetails?.name,
+                pincode : invoiceDetails?.address,
+                phone_number : invoiceDetails?.phone_number
+            }
+            var createBuyerResponse = await API.graphql({ query : createBuyer , variables : { inputVar : createBuyerObject }}) as { data }
+            buyersId = createBuyerResponse.data.createBuyers.id;
+        }
+
+        createInvoiceObject.buyersID = buyersId;
+
+        const createInvoiceResponse = await API.graphql({ query : createInvoice , variables : { inputVar : createInvoiceObject }}) as { data };
+
+        const invoiceId = createInvoiceResponse?.data.createInvoices.id;
+        
+        if (invoiceDetails?.items && invoiceDetails?.items?.length > 0) {
+            const createItemPromises = invoiceDetails?.items.map(item => {
+                const createItemObject : ItemDetailsPostObject = {
+                    rate         : item.rate,
+                    quantity     : item.quantity,
+                    invoicesID   : invoiceId,
+                    product_type : item.product_type
+                }
+                return API.graphql({ query : createItemDetails , variables : { inputVar : createItemObject }});
+            })
+            await Promise.all(createItemPromises);
+        }
+        printInvoice();
 
     }
 

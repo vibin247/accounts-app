@@ -138,7 +138,7 @@ export default function Sales() {
 
                 <Button style={{ textTransform : "none" }} className="half-field"
                  type="submit" variant="contained">
-                    Create Invoice
+                    Generate Invoice
                 </Button>
             </div>
         </form>

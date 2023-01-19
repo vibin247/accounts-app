@@ -5,5 +5,5 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
-export { default as InvoicesCreateForm } from "./InvoicesCreateForm";
-export { default as InvoicesUpdateForm } from "./InvoicesUpdateForm";
+export { default as BuyersCreateForm } from "./BuyersCreateForm";
+export { default as BuyersUpdateForm } from "./BuyersUpdateForm";

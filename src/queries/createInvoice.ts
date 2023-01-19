@@ -1,8 +1,8 @@
 export interface InvoicePostObject {
     date  : string,
     total : number,
-    discount    : number,
-    buyer_phone : string,
+    discount : number,
+    buyersID? : string,
     invoice_number    : string,
     transport_charges : number
 }
