@@ -3,15 +3,17 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { inWords, formatCurrency } from "../utils";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useNavigate, useParams } from "react-router-dom";
 import createInvoice, { InvoicePostObject } from "../queries/createInvoice";
 import { API } from "aws-amplify";
 import moment from "moment";
-import fetchBuyerViaPhone, { Buyer, BuyerResponse } from "../queries/fetchBuyerViaPhone";
+import fetchBuyerViaPhone, { BuyerResponse } from "../queries/fetchBuyerViaPhone";
 import createBuyer, { BuyerPostObject } from "../queries/createBuyer";
 import createItemDetails, { ItemDetailsPostObject } from "../queries/createItemDetails";
+import fetchInvoice from "../service/fetch.invoice";
+import { storeInvoiceDetails } from "../store/InvoiceDetailsReducer";
 
 export default function Invoice() {
 
@@ -23,10 +25,14 @@ export default function Invoice() {
 
     const navigate = useNavigate();
     const params   = useParams();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (params && params.invoice_id) {
-            console.log(params);
+            fetchInvoice(params.invoice_id).then((response : any) => {
+                dispatch(storeInvoiceDetails(response));
+            })
+            .catch(e => console.log(e))
         }
         else if (!invoiceDetails) {
             navigate("/");

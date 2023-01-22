@@ -83,7 +83,7 @@ export default function Sales() {
         }}>
             <div className="flex-column flex-gap-l">
                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker
+                    <DatePicker inputFormat="DD/MM/YYYY"
                         className="half-field" label="Invoice Date"
                         value={date} onChange={newValue => setDate(moment(newValue))}
                         renderInput={(params) => <TextField className="half-field" {...params} />} />

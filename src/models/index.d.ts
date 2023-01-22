@@ -13,8 +13,8 @@ type EagerItemDetails = {
   };
   readonly id: string;
   readonly product_type?: string | null;
-  readonly rate?: string | null;
-  readonly quantity?: string | null;
+  readonly rate?: number | null;
+  readonly quantity?: number | null;
   readonly invoicesID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -27,8 +27,8 @@ type LazyItemDetails = {
   };
   readonly id: string;
   readonly product_type?: string | null;
-  readonly rate?: string | null;
-  readonly quantity?: string | null;
+  readonly rate?: number | null;
+  readonly quantity?: number | null;
   readonly invoicesID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

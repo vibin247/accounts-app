@@ -20,14 +20,14 @@ export const schema = {
                 "rate": {
                     "name": "rate",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
                 "quantity": {
                     "name": "quantity",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -322,5 +322,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.3.4",
-    "version": "6700747ed37761a01c8c13f6fb667874"
+    "version": "e4b3ea1c082749037b7df7d48a813f52"
 };
